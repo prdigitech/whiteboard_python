@@ -10,9 +10,10 @@ class Whiteboard:
         self.root.geometry("800x600")
 
         self.last_x, self.last_y = None, None
-        self.color = "black"
+        self.brush_color = "black"         # Store brush color separately
+        self.color = self.brush_color      # Current drawing color
         self.brush_size = 3
-        self.background_color = "white"  # for eraser
+        self.background_color = "white"    # for eraser and canvas bg
 
         self.canvas = tk.Canvas(self.root, bg=self.background_color, cursor="cross")
         self.canvas.pack(fill=tk.BOTH, expand=True)
@@ -28,6 +29,9 @@ class Whiteboard:
 
         color_btn = tk.Button(toolbar, text="Color", command=self.choose_color)
         color_btn.pack(side=tk.LEFT)
+
+        brush_btn = tk.Button(toolbar, text="Brush", command=self.use_brush)
+        brush_btn.pack(side=tk.LEFT)
 
         eraser_btn = tk.Button(toolbar, text="Eraser", command=self.use_eraser)
         eraser_btn.pack(side=tk.LEFT)
@@ -59,10 +63,14 @@ class Whiteboard:
     def choose_color(self):
         color = colorchooser.askcolor()[1]
         if color:
-            self.color = color
+            self.brush_color = color
+            self.color = color  # switch current color to new brush color
 
     def use_eraser(self):
         self.color = self.background_color
+
+    def use_brush(self):
+        self.color = self.brush_color
 
     def clear_canvas(self):
         self.canvas.delete("all")
