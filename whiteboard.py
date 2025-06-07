@@ -12,8 +12,9 @@ class Whiteboard:
         self.last_x, self.last_y = None, None
         self.color = "black"
         self.brush_size = 3
+        self.background_color = "white"  # for eraser
 
-        self.canvas = tk.Canvas(self.root, bg="white", cursor="cross")
+        self.canvas = tk.Canvas(self.root, bg=self.background_color, cursor="cross")
         self.canvas.pack(fill=tk.BOTH, expand=True)
 
         self.canvas.bind('<Button-1>', self.activate_paint)
@@ -27,6 +28,9 @@ class Whiteboard:
 
         color_btn = tk.Button(toolbar, text="Color", command=self.choose_color)
         color_btn.pack(side=tk.LEFT)
+
+        eraser_btn = tk.Button(toolbar, text="Eraser", command=self.use_eraser)
+        eraser_btn.pack(side=tk.LEFT)
 
         clear_btn = tk.Button(toolbar, text="Clear", command=self.clear_canvas)
         clear_btn.pack(side=tk.LEFT)
@@ -56,6 +60,9 @@ class Whiteboard:
         color = colorchooser.askcolor()[1]
         if color:
             self.color = color
+
+    def use_eraser(self):
+        self.color = self.background_color
 
     def clear_canvas(self):
         self.canvas.delete("all")
